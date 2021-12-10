@@ -1,80 +1,39 @@
+### Desafio Dock Tech
 
-### Desafio Dock Tech de Seleção 
-Olá, queremos convidá-lo a participar de nosso desafio de seleção.  Pronto para participar? Seu trabalho será visto por nosso time e você receberá ao final um feedback sobre o que achamos do seu trabalho. Não é legal?
+O contrato deste desfio se encontra no arquivo swagger.yaml da raiz do projeto. A partir deste, temos
+descritos todos os recursos disponibilizados para uso através da API.
 
-### Sobre a oportunidade 
-A vaga é para software engineer, temos vagas com diversos níveis de senioridade e para cada um deles utilizaremos critérios específicos considerando esse aspecto, combinado? 
-Se você for aprovado nesta etapa, será convidado para uma entrevista final com nosso time de especialistas.
+Para melhor visualização, abra o contrato em <https://editor.swagger.io/>.
 
-### Desafio Técnico
-  Nós trabalhamos com meios de pagamento e nada melhor que um bom sistema para gestão de contas:
-  
-  - Pré-requisitos:
-    ```
-    * Desenvolver os recursos em API Rest que realizam operações bancárias com a entidade conta a seguir:
-    ```
-    | Contas | Tipo |
-    |-|-|
-    | idConta | Numérico |
-    | idPessoa | Numérico |
-    | saldo | Monetário |
-    | limiteSaqueDiario | Monetário |
-    | flagAtivo | Condicional |
-    | tipoConta | Numérido |
-    | dataCriacao | Data |
+### Frameworks / Stack Utilizada
 
-    ```
-    * Tabela de transações realizadas na conta
-    ```
-    | Transacoes | Tipo |
-    |-|-|
-    | idTransacao | Numérico |
-    | idConta | Numérico |
-    | valor | Monetário |
-    | dataTransacao | Data |
+* Maven 3.8.1
+* Spring 5
+* Spring Boot 2.5.0
+* PostgreSQL 14.1
+* JUnit 5 
 
-    ```
-    * P.S.: Não é necessário realizar operações com a tabela pessoa, mas é necessária a criação da tabela para mapeamento da relação com a conta e enviar script de criação de pelo menos uma pessoa.
-    ```
+### Montando o ambiente local de desenvolvimento
 
-    | Pessoas | Tipo |
-    |-|-|
-    | idPessoa | Numérico |
-    | nome | Texto |
-    | cpf | Texto |
-    | dataNascimento | Data |    
+Passo 1:
+Instale e deixe o Docker UP na sua maquina.
 
-  - O que esperamos como escopo mínimo:
-    ```
-    * Implementar path que realiza a criação de uma conta;
-    * Implementar path que realiza operação de depósito em uma conta;
-    * Implementar path que realiza operação de consulta de saldo em determinada conta;
-    * Implementar path que realiza operação de saque em uma conta;
-    * Implementar path que realiza o bloqueio de uma conta;
-    * Implementar path que recupera o extrato de transações de uma conta;
-    ```
-  - O que será diferencial:
-    ```
-    * Implementar extrato por período;
-    * Elaborar manual de execução;
-    * Elaborar documentação javadoc;
-    * Elaborar testes;
-    * Prazo de entrega;
-    ```
-    
-  - O que vamos avaliar:
-    ```
-    * Seu código; 
-    * Script de banco;
-    * Organização;
-    * Boas práticas;
-    * Diferenciais;    
-    ```
+Passo 2:
+Instale o MAVEN.
 
+Passo 3: 
+<b>mvn clean install -e -Pdocker-create -Pdocker-compose</b>
 
-### Instruções
-      1. Faça o fork do desafio;
-      2. Crie um repositório privado no bitbucket para o projeto e adicione como colaborador o usuário artinf0;
-      3. Desenvolva. Você terá até 7 (sete) dias a partir da data do envio do desafio; 
-      4. Após concluir seu trabalho faça um push; 
-      5. Envie um e-mail para arthur.azevedo@dock.tech notificando a finalização do desafio para validação.
+* <i><b>mvn clean install -e</b></i>: compila, testa e empacota a aplicação
+* <i><b>-Pdocker-create</b></i>: realiza o pull da imagem da aplicação no repositorio local do docker
+* <i><b>-Pdocker-compose</b></i>: realiza a construção de todo o ambiente (PostgreSQL, setup de scripts e Aplicação) no docker
+
+### POSTMAN
+
+Para auxilio e execução local, uma collection com todas as requisiçoes esta disponibilizada na raiz do projeto. Basta abrir o 
+arquivo Desafio2.postman_collection.json no POSTMAN.
+
+### Como utilizar a API
+
+1. Na tabela pessoa, foram cadastrados dois CPFs no setup inicial que podem ser utilizados para criar uma conta - 65961038033 e 87304306076.
+2. Após criar uma conta com sucesso, utilize o valor do campo idConta do objeto de retorno no path dos demais recursos da API, por exemplo, consulta de saldo, saque e deposito.

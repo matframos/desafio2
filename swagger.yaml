@@ -1,0 +1,357 @@
+swagger: "2.0"
+info:
+  description: "Este é o swagger disponibilizado para o Desafio Dock Tech de Seleção, onde temos o intuito de disponibilizar uma API de gestão de contas bancarias."
+  version: "1.0.0"
+  title: "API de Gestão de Contas"
+  contact:
+    email: "mateus_feliperamos@hotmail.com"
+host: "dock.desafio2"
+basePath: "/gestao/v1/"
+tags:
+- name: "Contas"
+  description: "Recursos para gestão de contas"
+- name: "Transações"
+  description: "Recursos para gestão de transações"
+schemes:
+- "https"
+- "http"
+paths:
+  /contas:
+    post:
+      tags:
+      - "Contas"
+      summary: "Cria uma nova conta para um cliente"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objeto de uma nova conta"
+        required: true
+        schema:
+          $ref: "#/definitions/NovaContaRequest"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/NovaContaResponse"
+        "400":
+          description: "Bad Request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ErrorResponse"
+        "412":
+          description: "Precondition Failed"
+          schema:
+            type: string
+            example: "Cliente 25596150029 nao encontrado"
+
+  /contas/{idConta}:
+    delete:
+      tags:
+      - "Contas"
+      summary: "Inativa uma conta de um cliente"
+      produces:
+      - "text/plain"
+      parameters:
+      - name: "idConta"
+        in: "path"
+        description: "Identificador da conta do cliente"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+            example: "Conta 0 inabilitada com sucesso"
+        "404":
+          description: "Not Found"
+          schema:
+            type: "string"
+            example: "Conta 0 nao encontrada"
+            
+  /contas/{idConta}/saldo:
+    get:
+      tags:
+      - "Contas"
+      summary: "Busca o saldo disponivel de uma conta"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "idConta"
+        in: "path"
+        description: "Identificador da conta do cliente"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+              $ref: "#/definitions/SaldoResponse"
+        "404":
+          description: "Not Found"
+          schema:
+            type: "string"
+            example: "Conta 0 nao encontrada"
+            
+  /transacoes/{idConta}/deposito:
+    post:
+      tags:
+      - "Transações"
+      summary: "Realiza um deposito na conta de um cliente"
+      consumes:
+      - "application/json"
+      produces:
+      - "text/plain"
+      parameters:
+      - name: "idConta"
+        in: "path"
+        description: "Identificador da conta do cliente"
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "body"
+        in: "body"
+        description: "Objeto de uma nova operação"
+        required: true
+        schema:
+          $ref: "#/definitions/OperacaoRequest"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            type: string
+            example: "Deposito realizado com sucesso."
+        "400":
+          description: "Bad Request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: "Not Found"
+          schema:
+            type: "string"
+            example: "Conta 0 nao encontrada"
+            
+  /transacoes/{idConta}/saque:
+    post:
+      tags:
+      - "Transações"
+      summary: "Realiza um saque na conta de um cliente"
+      consumes:
+      - "application/json"
+      produces:
+      - "text/plain"
+      parameters:
+      - name: "idConta"
+        in: "path"
+        description: "Identificador da conta do cliente"
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "body"
+        in: "body"
+        description: "Objeto de uma nova operação"
+        required: true
+        schema:
+          $ref: "#/definitions/OperacaoRequest"
+      responses:
+        "201":
+          description: "Created"
+          schema:
+            type: string
+            example: "Saque realizado com sucesso."
+        "400":
+          description: "Bad Request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: "Not Found"
+          schema:
+            type: "string"
+            example: "Conta 0 nao encontrada"
+            
+  /transacoes/{idConta}/extrato:
+    get:
+      tags:
+      - "Transações"
+      summary: "Realiza um saque na conta de um cliente"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "idConta"
+        in: "path"
+        description: "Identificador da conta do cliente"
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "dataInicial"
+        in: "query"
+        description: "Data inicial do range de pesquisa"
+        required: true
+        type: "string"
+        format: "date"
+      - name: "dataFinal"
+        in: "query"
+        description: "Data final do range de pesquisa"
+        required: true
+        type: "string"
+        format: "date"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TransacaoResponse"
+        "400":
+          description: "Bad Request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: "Not Found"
+          schema:
+            type: "string"
+            example: "Conta 0 nao encontrada"
+
+definitions:
+  NovaContaRequest:
+    type: "object"
+    description: "Objeto utilizado para a criação de novas contas"
+    required:
+    - "cpf"
+    - "limiteSaqueDiario"
+    - "tipoConta"
+    properties:
+      cpf:
+        type: "string"
+        minLength: 11
+        maxLength: 11
+        example: "25596150029"
+      limiteSaqueDiario:
+        type: "number"
+        format: "double"
+        minimum: 0
+        example: 500,00000
+      tipoConta:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        example: 1
+
+  NovaContaResponse:
+    type: "object"
+    description: "Objeto utilizado para os dados da conta recém criada."
+    required:
+    - "idConta"
+    - "idPessoa"
+    - "saldo"
+    - "limiteSaqueDiario"
+    - "tipoConta"
+    - "dataCriacao"
+    properties:
+      idConta:
+        type: "integer"
+        format: "int32"
+        example: "10555"
+      idPessoa:
+        type: "integer"
+        format: "int32"
+        example: "130"
+      saldo:
+        type: "number"
+        format: "double"
+        minimum: 0
+        example: 100,00000
+      limiteSaqueDiario:
+        type: "number"
+        format: "double"
+        minimum: 0
+        example: 500,00000
+      tipoConta:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        example: 1
+      dataCriacao:
+        type: "string"
+        format: "date"
+        example: "2021-05-22"
+        
+  OperacaoRequest:
+    type: "object"
+    required:
+    - "valor"
+    properties:
+      saldo:
+        type: "number"
+        format: "double"
+        example: 1000,00000
+        
+  SaldoResponse:
+    type: "object"
+    required:
+    - "saldo"
+    properties:
+      saldo:
+        type: "number"
+        format: "double"
+        example: 2300,00000
+
+  TransacaoResponse:
+    type: "object"
+    required:
+    - "idTransacao"
+    - "idConta"
+    - "valor"
+    - "dataTransacao"
+    - "tipoTransacao"
+    properties:
+      idTransacao:
+        type: "integer"
+        format: "int64"
+        example: 1246678
+      idConta:
+        type: "integer"
+        format: "int32"
+        example: 15
+      valor:
+        type: "number"
+        format: "double"
+        example: 40,00000
+      dataTransacao:
+        type: "string"
+        format: "date"
+        example: "2021-06-20"
+      tipoTransacao:
+        type: "string"
+        enum: 
+         - DEPOSITO
+         - SAQUE
+        
+  ErrorResponse:
+    type: "object"
+    description: ""
+    required:
+    - "code"
+    - "description"
+    properties:
+      code:
+        type: "string"
+        example: "400.001"
+      description:
+        type: "string"
+        example: "Erro"

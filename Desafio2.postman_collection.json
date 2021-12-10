@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "5c6b05c3-f249-4690-83b0-b44476aee788",
+		"name": "Desafio2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Criar Conta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cpf\": \"65961038033\",\n    \"limiteSaqueDiario\": 1000.00000,\n    \"tipoConta\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/gestao/v1/contas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gestao",
+						"v1",
+						"contas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inativar Conta",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cpf\": \"65961038033\",\n    \"limiteSaqueDiario\": 500.00000,\n    \"tipoConta\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/gestao/v1/contas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gestao",
+						"v1",
+						"contas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Saldo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/gestao/v1/contas/1/saldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gestao",
+						"v1",
+						"contas",
+						"1",
+						"saldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Novo Deposito",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"valor\": 500.00000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/gestao/v1/transacoes/1/deposito",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gestao",
+						"v1",
+						"transacoes",
+						"1",
+						"deposito"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Novo Saque",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"valor\": 100.00000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/gestao/v1/transacoes/1/saque",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gestao",
+						"v1",
+						"transacoes",
+						"1",
+						"saque"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Extrato",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"valor\": 500.00000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/gestao/v1/transacoes/1/extrato?dataInicial=2021-12-09&dataFinal=2021-12-10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"gestao",
+						"v1",
+						"transacoes",
+						"1",
+						"extrato"
+					],
+					"query": [
+						{
+							"key": "dataInicial",
+							"value": "2021-12-09"
+						},
+						{
+							"key": "dataFinal",
+							"value": "2021-12-10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

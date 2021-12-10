@@ -1,0 +1,42 @@
+version: '3.7'
+
+networks:
+  default:
+    name: desafio2
+
+services:
+  postgres:
+    image: postgres:14.1
+    restart: "no"
+    environment:
+      - POSTGRES_DB=db_trns
+      - POSTGRES_USER=db_trns
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    volumes:
+      - ${postgresData}:/var/lib/postgresql/data
+      - ${createTables}:/docker-entrypoint-initdb.d/create_tables.sql
+      - ${fillTables}:/docker-entrypoint-initdb.d/fill_tables.sql
+
+  desafio2:
+    image: ${appImage}
+    restart: "no"
+    depends_on:
+      - "postgres"
+    environment:
+      - POSTGRE_SERVER_HOST=host.docker.internal
+      - POSTGRE_PORT=5432
+      - POSTGRE_DATABASE=db_trns
+      - POSTGRE_USERNAME=db_trns 
+      - POSTGRE_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '8080:8080'
